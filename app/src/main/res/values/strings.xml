@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Udacity Movie App</string>
+    <string name="title_movie_detail">Movie Detail</string>
+    <string name="poster_grid_desc_image_poster">image poster</string>
+
+    <string name="menu_item_sort_popular">Popular</string>
+    <string name="menu_item_sort_top_rated">Top Rated</string>
+
+    <string name="movie_detail_overview">Overview</string>
+    <string name="movie_detail_movie_poster_desc">movie_poster</string>
+
+    <plurals name="movie_detail_vote_count">
+        <item quantity="one">%1$d Voter</item>
+        <item quantity="other">%1$d Voters</item>
+    </plurals>
+</resources>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_movie_detail_start_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/spacing_16" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_movie_detail_start_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/spacing_144" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_movie_detail_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/spacing_16" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_movie_detail_bottom_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/spacing_16" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_movie_detail_bottom_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/spacing_96" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="guideline_movie_detail_bottom_2 ,ratingBar_movie_details_rating" />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_2"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_movie_detail_bottom_1"
+        tools:text="Lorem Ipsum is " />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_title"
+        tools:text="2016-04-12" />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_genres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_release_date"
+        tools:text="Thriller, Drama" />
+
+    <RatingBar
+        android:id="@+id/ratingBar_movie_details_rating"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:numStars="5"
+        android:progressBackgroundTint="@color/secondaryLightColor"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_genres"
+        tools:rating="2" />
+
+    <TextView
+        android:id="@+id/tv_movie_details_voter_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingBar_movie_details_rating"
+        app:layout_constraintStart_toEndOf="@+id/ratingBar_movie_details_rating"
+        app:layout_constraintTop_toTopOf="@+id/ratingBar_movie_details_rating"
+        tools:text="300 Voters" />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_overview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_24"
+        android:text="@string/movie_detail_overview"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
+        app:layout_constraintTop_toBottomOf="@+id/barrier"
+        tools:text="Overview" />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:lineSpacingMultiplier="1.1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Inverse"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_overview"
+        tools:text="@sample/tools:lorem/random" />
+
+</android.support.constraint.ConstraintLayout>

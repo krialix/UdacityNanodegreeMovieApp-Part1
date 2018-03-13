@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/iv_poster_grid_poster"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/poster_grid_desc_image_poster"
+        app:layout_constraintDimensionRatio="w,1.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <View
+        android:id="@+id/view_poster_grid_background"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_poster_grid_poster"
+        tools:background="@color/secondaryColor" />
+
+    <TextView
+        android:id="@+id/tv_poster_grid_title"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/spacing_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBottom_toTopOf="@+id/tv_poster_grid_rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_poster_grid_background"
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:text="@tools:sample/lorem"
+        tools:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tv_poster_grid_rating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_star_black_18dp"
+        android:drawablePadding="@dimen/spacing_4"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/spacing_8"
+        android:paddingEnd="@dimen/spacing_8"
+        android:paddingStart="@dimen/spacing_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintBottom_toBottomOf="@+id/view_poster_grid_background"
+        app:layout_constraintTop_toBottomOf="@+id/tv_poster_grid_title"
+        tools:text="@tools:sample/lorem"
+        tools:textColor="@android:color/white" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_popular"
+            android:checked="true"
+            android:title="@string/menu_item_sort_popular"
+            android:titleCondensed="@string/menu_item_sort_popular" />
+        <item
+            android:id="@+id/action_top_rated"
+            android:title="@string/menu_item_sort_top_rated"
+            android:titleCondensed="@string/menu_item_sort_top_rated" />
+    </group>
+</menu>
