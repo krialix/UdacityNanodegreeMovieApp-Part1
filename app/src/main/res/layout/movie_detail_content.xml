@@ -112,8 +112,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
         app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
-        app:layout_constraintTop_toBottomOf="@+id/barrier"
-        tools:text="Overview" />
+        app:layout_constraintTop_toBottomOf="@+id/barrier" />
 
     <TextView
         android:id="@+id/tv_movie_detail_description"
@@ -125,6 +124,52 @@
         app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
         app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_overview"
+        tools:maxLines="4"
         tools:text="@sample/tools:lorem/random" />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_trailers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:text="@string/movie_detail_trailers"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_description" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_movie_detail_trailers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:orientation="horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_trailers" />
+
+    <TextView
+        android:id="@+id/tv_movie_detail_reviews"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:text="@string/movie_detail_reviews"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_movie_detail_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_movie_detail_start_1"
+        app:layout_constraintTop_toBottomOf="@+id/rv_movie_detail_trailers" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_movie_detail_reviews"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_detail_reviews" />
 
 </android.support.constraint.ConstraintLayout>

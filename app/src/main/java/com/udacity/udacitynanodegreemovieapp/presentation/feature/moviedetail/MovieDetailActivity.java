@@ -8,6 +8,9 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.udacity.udacitynanodegreemovieapp.R;
 import com.udacity.udacitynanodegreemovieapp.data.model.GenresItem;
 import com.udacity.udacitynanodegreemovieapp.data.model.MovieDetail;
+import com.udacity.udacitynanodegreemovieapp.data.model.ReviewResponse;
 import com.udacity.udacitynanodegreemovieapp.data.network.MovieDbClient;
 import com.udacity.udacitynanodegreemovieapp.data.repository.MovieRepository;
 import com.udacity.udacitynanodegreemovieapp.presentation.feature.movielist.MovieListActivity;
@@ -65,10 +69,18 @@ public class MovieDetailActivity extends AppCompatActivity {
   @BindView(R.id.tv_movie_detail_description)
   TextView tvDescription;
 
+  @BindView(R.id.rv_movie_detail_trailers)
+  RecyclerView rvTrailers;
+
+  @BindView(R.id.rv_movie_detail_reviews)
+  RecyclerView rvReviews;
+
+  private ReviewListAdapter reviewListAdapter;
+
   public static void start(Context context, int movieId) {
-      Intent starter = new Intent(context, MovieDetailActivity.class);
-      starter.putExtra(ARG_MOVIE_ID, movieId);
-      context.startActivity(starter);
+    Intent starter = new Intent(context, MovieDetailActivity.class);
+    starter.putExtra(ARG_MOVIE_ID, movieId);
+    context.startActivity(starter);
   }
 
   @Override
@@ -77,6 +89,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     setContentView(R.layout.activity_movie_detail);
     ButterKnife.bind(this);
     setupToolbar();
+
+    setupReviewsRecyclerView();
 
     int movieId = getIntent().getIntExtra(ARG_MOVIE_ID, 0);
 
@@ -88,6 +102,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         new ViewModelProvider(this, factory).get(MovieDetailViewModel.class);
 
     viewModel.getMovie().observe(this, this::setMovieDetails);
+
+    viewModel.getReviews().observe(this, this::setMovieReviews);
   }
 
   private void setupToolbar() {
@@ -149,5 +165,18 @@ public class MovieDetailActivity extends AppCompatActivity {
                 movieDetail.getVoteCount()));
 
     tvDescription.setText(movieDetail.getOverview());
+  }
+
+  private void setMovieReviews(ReviewResponse reviewResponse) {
+    reviewListAdapter.submitList(reviewResponse.getResults());
+  }
+
+  private void setupReviewsRecyclerView() {
+    rvReviews.setItemAnimator(new DefaultItemAnimator());
+    rvReviews.addItemDecoration(
+        new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+
+    reviewListAdapter = new ReviewListAdapter(getResources());
+    rvReviews.setAdapter(reviewListAdapter);
   }
 }

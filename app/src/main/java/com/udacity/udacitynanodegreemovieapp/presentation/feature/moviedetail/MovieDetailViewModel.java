@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import com.udacity.udacitynanodegreemovieapp.data.model.MovieDetail;
+import com.udacity.udacitynanodegreemovieapp.data.model.ReviewResponse;
+import com.udacity.udacitynanodegreemovieapp.data.model.TrailerResponse;
 import com.udacity.udacitynanodegreemovieapp.data.repository.MovieRepository;
 
 class MovieDetailViewModel extends ViewModel {
@@ -20,6 +22,14 @@ class MovieDetailViewModel extends ViewModel {
 
   LiveData<MovieDetail> getMovie() {
     return movieRepository.getMovie(movieId);
+  }
+
+  LiveData<ReviewResponse> getReviews() {
+    return movieRepository.getReviews(movieId);
+  }
+
+  LiveData<TrailerResponse> getTrailers() {
+    return movieRepository.getTrailers(movieId);
   }
 
   static class Factory extends ViewModelProvider.NewInstanceFactory {

@@ -7,7 +7,11 @@
     <string name="menu_item_sort_top_rated">Top Rated</string>
 
     <string name="movie_detail_overview">Overview</string>
+    <string name="movie_detail_trailers">Trailers</string>
+    <string name="movie_detail_reviews">Reviews</string>
     <string name="movie_detail_movie_poster_desc">movie_poster</string>
+
+    <string name="review_content">%1$s - %2$s</string>
 
     <plurals name="movie_detail_vote_count">
         <item quantity="one">%1$d Voter</item>
