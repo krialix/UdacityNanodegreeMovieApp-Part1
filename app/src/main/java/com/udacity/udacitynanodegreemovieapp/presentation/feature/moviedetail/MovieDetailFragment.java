@@ -1,6 +1,7 @@
 package com.udacity.udacitynanodegreemovieapp.presentation.feature.moviedetail;
 
 import android.app.Activity;
+import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -75,7 +76,9 @@ public class MovieDetailFragment extends Fragment {
 
       ViewModelProvider.Factory factory =
           new MovieDetailViewModel.Factory(
-              MovieRepository.getInstance(MovieDbClient.getInstance()), movieId);
+              (Application) getContext().getApplicationContext(),
+              MovieRepository.getInstance(MovieDbClient.getInstance()),
+              movieId);
 
       viewModel = new ViewModelProvider(this, factory).get(MovieDetailViewModel.class);
 
@@ -98,13 +101,13 @@ public class MovieDetailFragment extends Fragment {
 
     glide
         .load(
-            ImageUrlResolver.getImageUrl(
+            ImageUrlResolver.getTdmbImageUrl(
                 movieDetail.getBackdropPath(), ImageUrlResolver.MODIFIER_W780))
         .into(ivBackdrop);
 
     glide
         .load(
-            ImageUrlResolver.getImageUrl(
+            ImageUrlResolver.getTdmbImageUrl(
                 movieDetail.getPosterPath(), ImageUrlResolver.MODIFIER_W185))
         .into(ivPoster);
 

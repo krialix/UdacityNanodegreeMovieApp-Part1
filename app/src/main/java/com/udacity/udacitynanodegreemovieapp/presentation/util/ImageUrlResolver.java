@@ -18,8 +18,12 @@ public final class ImageUrlResolver {
   private ImageUrlResolver() {}
 
   @NonNull
-  public static String getImageUrl(@NonNull String path, @ModifierType String modifier) {
+  public static String getTdmbImageUrl(@NonNull String path, @ModifierType String modifier) {
     return "http://image.tmdb.org/t/p/" + modifier + "/" + path;
+  }
+
+  public static String getYoutubeThumbUrl(@NonNull String videoId) {
+    return "https://img.youtube.com/vi/" + videoId + "/default.jpg";
   }
 
   @Retention(RetentionPolicy.SOURCE)

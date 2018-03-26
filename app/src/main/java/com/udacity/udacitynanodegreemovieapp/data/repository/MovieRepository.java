@@ -1,20 +1,28 @@
 package com.udacity.udacitynanodegreemovieapp.data.repository;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
+import com.udacity.udacitynanodegreemovieapp.data.db.MovieContract;
 import com.udacity.udacitynanodegreemovieapp.data.model.MovieDetail;
 import com.udacity.udacitynanodegreemovieapp.data.model.MovieResponse;
 import com.udacity.udacitynanodegreemovieapp.data.model.ReviewResponse;
 import com.udacity.udacitynanodegreemovieapp.data.model.TrailerResponse;
 import com.udacity.udacitynanodegreemovieapp.data.network.MovieDbClient;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieRepository {
+
+  private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
   private static MovieRepository instance = null;
 
@@ -115,5 +123,27 @@ public class MovieRepository {
             });
 
     return trailersLiveData;
+  }
+
+  public void toggleFavoriteMovie(Application application, MovieDetail movie, boolean favored) {
+    EXECUTOR.submit(
+        () -> {
+          if (favored) {
+            ContentValues values = new ContentValues();
+            values.put(MovieContract.MovieEntry.COLUMN_ID, movie.getId());
+            values.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
+            application.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
+          } else {
+            // delete from DB
+            application
+                .getContentResolver()
+                .delete(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    MovieContract.MovieEntry.COLUMN_ID + " = ?",
+                    new String[] {String.valueOf(movie.getId())});
+          }
+          // and inform everyone we have changed something
+          application.getContentResolver().notifyChange(MovieContract.MovieEntry.CONTENT_URI, null);
+        });
   }
 }

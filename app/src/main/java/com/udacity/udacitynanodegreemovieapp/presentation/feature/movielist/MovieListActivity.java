@@ -30,7 +30,8 @@ import butterknife.ButterKnife;
 public class MovieListActivity extends AppCompatActivity {
 
   public static final String SORT_TYPE_POPULAR = "popular";
-  public static final String SORT_TOP_RATED = "top_rated";
+  public static final String SORT_TYPE_TOP_RATED = "top_rated";
+  public static final String SORT_TYPE_FAVORED = "favored";
   private static final String KEY_SORT_TYPE = "SORT_TYPE";
 
   @BindView(R.id.toolbar)
@@ -120,8 +121,11 @@ public class MovieListActivity extends AppCompatActivity {
       case SORT_TYPE_POPULAR:
         menu.getItem(0).setChecked(true);
         break;
-      case SORT_TOP_RATED:
+      case SORT_TYPE_TOP_RATED:
         menu.getItem(1).setChecked(true);
+        break;
+      case SORT_TYPE_FAVORED:
+        menu.getItem(2).setChecked(true);
         break;
     }
   }
@@ -140,7 +144,11 @@ public class MovieListActivity extends AppCompatActivity {
         viewModel.getMovies(sortType);
         break;
       case R.id.action_top_rated:
-        sortType = SORT_TOP_RATED;
+        sortType = SORT_TYPE_TOP_RATED;
+        viewModel.getMovies(sortType);
+        break;
+      case R.id.action_favored:
+        sortType = SORT_TYPE_FAVORED;
         viewModel.getMovies(sortType);
         break;
     }

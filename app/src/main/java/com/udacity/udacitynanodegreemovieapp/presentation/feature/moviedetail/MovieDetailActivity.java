@@ -1,18 +1,24 @@
 package com.udacity.udacitynanodegreemovieapp.presentation.feature.moviedetail;
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,6 +30,8 @@ import com.udacity.udacitynanodegreemovieapp.R;
 import com.udacity.udacitynanodegreemovieapp.data.model.GenresItem;
 import com.udacity.udacitynanodegreemovieapp.data.model.MovieDetail;
 import com.udacity.udacitynanodegreemovieapp.data.model.ReviewResponse;
+import com.udacity.udacitynanodegreemovieapp.data.model.Trailer;
+import com.udacity.udacitynanodegreemovieapp.data.model.TrailerResponse;
 import com.udacity.udacitynanodegreemovieapp.data.network.MovieDbClient;
 import com.udacity.udacitynanodegreemovieapp.data.repository.MovieRepository;
 import com.udacity.udacitynanodegreemovieapp.presentation.feature.movielist.MovieListActivity;
@@ -31,6 +39,7 @@ import com.udacity.udacitynanodegreemovieapp.presentation.util.ImageUrlResolver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -75,7 +84,15 @@ public class MovieDetailActivity extends AppCompatActivity {
   @BindView(R.id.rv_movie_detail_reviews)
   RecyclerView rvReviews;
 
+  @BindView(R.id.fab_movie_detail_favorite)
+  FloatingActionButton fabFavorite;
+
   private ReviewListAdapter reviewListAdapter;
+  private TrailerListAdapter trailerListAdapter;
+
+  private MovieDetailViewModel viewModel;
+
+  private MovieDetail movieDetail;
 
   public static void start(Context context, int movieId) {
     Intent starter = new Intent(context, MovieDetailActivity.class);
@@ -91,19 +108,23 @@ public class MovieDetailActivity extends AppCompatActivity {
     setupToolbar();
 
     setupReviewsRecyclerView();
+    setupTrailersRecyclerView();
 
     int movieId = getIntent().getIntExtra(ARG_MOVIE_ID, 0);
 
     ViewModelProvider.Factory factory =
         new MovieDetailViewModel.Factory(
-            MovieRepository.getInstance(MovieDbClient.getInstance()), movieId);
+            getApplication(), MovieRepository.getInstance(MovieDbClient.getInstance()), movieId);
 
-    MovieDetailViewModel viewModel =
-        new ViewModelProvider(this, factory).get(MovieDetailViewModel.class);
+    viewModel = new ViewModelProvider(this, factory).get(MovieDetailViewModel.class);
 
     viewModel.getMovie().observe(this, this::setMovieDetails);
 
     viewModel.getReviews().observe(this, this::setMovieReviews);
+
+    viewModel.getTrailers().observe(this, this::setMovieTrailers);
+
+    viewModel.getFavorite().observe(this, fabFavorite::setSelected);
   }
 
   private void setupToolbar() {
@@ -131,17 +152,19 @@ public class MovieDetailActivity extends AppCompatActivity {
   }
 
   private void setMovieDetails(MovieDetail movieDetail) {
+    this.movieDetail = movieDetail;
+
     RequestManager glide = Glide.with(this);
 
     glide
         .load(
-            ImageUrlResolver.getImageUrl(
+            ImageUrlResolver.getTdmbImageUrl(
                 movieDetail.getBackdropPath(), ImageUrlResolver.MODIFIER_W780))
         .into(ivBackdrop);
 
     glide
         .load(
-            ImageUrlResolver.getImageUrl(
+            ImageUrlResolver.getTdmbImageUrl(
                 movieDetail.getPosterPath(), ImageUrlResolver.MODIFIER_W185))
         .into(ivPoster);
 
@@ -171,6 +194,10 @@ public class MovieDetailActivity extends AppCompatActivity {
     reviewListAdapter.submitList(reviewResponse.getResults());
   }
 
+  private void setMovieTrailers(TrailerResponse trailerResponse) {
+    trailerListAdapter.submitList(trailerResponse.getResults());
+  }
+
   private void setupReviewsRecyclerView() {
     rvReviews.setItemAnimator(new DefaultItemAnimator());
     rvReviews.addItemDecoration(
@@ -178,5 +205,40 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     reviewListAdapter = new ReviewListAdapter(getResources());
     rvReviews.setAdapter(reviewListAdapter);
+  }
+
+  private void setupTrailersRecyclerView() {
+    RecyclerView.LayoutManager lm =
+        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    rvTrailers.setLayoutManager(lm);
+
+    rvTrailers.setItemAnimator(new DefaultItemAnimator());
+
+    RequestManager glide = Glide.with(this);
+    trailerListAdapter = new TrailerListAdapter(glide, this::openTrailer);
+
+    rvTrailers.setAdapter(trailerListAdapter);
+  }
+
+  @OnClick(R.id.fab_movie_detail_favorite)
+  void toggleFavoriteMovie(View view) {
+    if (movieDetail != null) {
+      viewModel.toggleFavoriteMovie(movieDetail);
+    }
+  }
+
+  private void openTrailer(@Nullable Trailer trailer) {
+    if (trailer != null) {
+      Uri uriApp = Uri.parse("vnd.youtube:" + trailer.getKey());
+      Uri uriWeb = Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey());
+      Intent intent = null;
+      try {
+        intent = new Intent(Intent.ACTION_VIEW, uriApp);
+      } catch (ActivityNotFoundException e) {
+        intent = new Intent(Intent.ACTION_VIEW, uriWeb);
+      } finally {
+        startActivity(intent);
+      }
+    }
   }
 }

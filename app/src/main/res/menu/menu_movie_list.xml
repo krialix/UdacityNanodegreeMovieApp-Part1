@@ -11,5 +11,9 @@
             android:id="@+id/action_top_rated"
             android:title="@string/menu_item_sort_top_rated"
             android:titleCondensed="@string/menu_item_sort_top_rated" />
+        <item
+            android:id="@+id/action_favored"
+            android:title="@string/menu_item_sort_favored"
+            android:titleCondensed="@string/menu_item_sort_favored" />
     </group>
 </menu>

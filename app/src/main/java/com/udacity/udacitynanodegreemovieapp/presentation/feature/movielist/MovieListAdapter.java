@@ -101,28 +101,16 @@ class MovieListAdapter extends ListAdapter<Movie, MovieListAdapter.MovieViewHold
     @BindView(R.id.tv_poster_grid_rating)
     TextView tvRating;
 
-    /**
-     * Instantiates a new Movie view holder.
-     *
-     * @param view the view
-     */
     MovieViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
 
-    /**
-     * Binds movie.
-     *
-     * @param movie the movie
-     * @param glide the glide
-     * @param onMovieClickListener the on movie click listener
-     */
     void bind(Movie movie, RequestManager glide, OnMovieClickListener onMovieClickListener) {
       rootView.setOnClickListener(v -> onMovieClickListener.onMovieClick(v, movie.getId()));
 
       final String url =
-          ImageUrlResolver.getImageUrl(movie.getPosterPath(), ImageUrlResolver.MODIFIER_W342);
+          ImageUrlResolver.getTdmbImageUrl(movie.getPosterPath(), ImageUrlResolver.MODIFIER_W342);
       glide
           .load(url)
           .listener(

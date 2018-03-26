@@ -10,7 +10,7 @@ public class TrailerResponse {
   private int id;
 
   @Json(name = "results")
-  private List<Trailer> trailers;
+  private List<Trailer> results;
 
   public int getId() {
     return id;
@@ -20,11 +20,11 @@ public class TrailerResponse {
     this.id = id;
   }
 
-  public List<Trailer> getTrailers() {
-    return trailers;
+  public List<Trailer> getResults() {
+    return results;
   }
 
-  public void setTrailers(List<Trailer> trailers) {
-    this.trailers = trailers;
+  public void setResults(List<Trailer> results) {
+    this.results = results;
   }
 }
