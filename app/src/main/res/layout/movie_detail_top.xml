@@ -46,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_24"
         android:contentDescription="@string/movie_detail_movie_poster_desc"
+        android:elevation="8dp"
         android:paddingTop="@dimen/spacing_48"
         android:scaleType="fitCenter"
         app:layout_anchor="@+id/toolbar_layout"

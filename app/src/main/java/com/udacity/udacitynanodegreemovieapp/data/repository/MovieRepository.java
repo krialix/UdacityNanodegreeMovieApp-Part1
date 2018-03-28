@@ -130,11 +130,10 @@ public class MovieRepository {
         () -> {
           if (favored) {
             ContentValues values = new ContentValues();
-            values.put(MovieContract.MovieEntry.COLUMN_ID, movie.getId());
+            values.put(MovieContract.MovieEntry.COLUMN_ID, String.valueOf(movie.getId()));
             values.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
             application.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
           } else {
-            // delete from DB
             application
                 .getContentResolver()
                 .delete(
@@ -142,7 +141,6 @@ public class MovieRepository {
                     MovieContract.MovieEntry.COLUMN_ID + " = ?",
                     new String[] {String.valueOf(movie.getId())});
           }
-          // and inform everyone we have changed something
           application.getContentResolver().notifyChange(MovieContract.MovieEntry.CONTENT_URI, null);
         });
   }
