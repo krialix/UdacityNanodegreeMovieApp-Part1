@@ -21,7 +21,11 @@ public class MovieDbHelper extends SQLiteOpenHelper {
             + MovieContract.MovieEntry.COLUMN_ID
             + " TEXT PRIMARY KEY, "
             + MovieContract.MovieEntry.COLUMN_TITLE
-            + " TEXT "
+            + " TEXT, "
+            + MovieContract.MovieEntry.COLUMN_POSTER_PATH
+            + " INT, "
+            + MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE
+            + " TEXT"
             + ")";
     db.execSQL(SQL_CREATE_MOVIE_TABLE);
   }

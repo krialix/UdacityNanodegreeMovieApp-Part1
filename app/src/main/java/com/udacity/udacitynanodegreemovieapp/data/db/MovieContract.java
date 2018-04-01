@@ -11,8 +11,12 @@ public class MovieContract {
   public static final class MovieEntry implements BaseColumns {
     public static final Uri CONTENT_URI =
         BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
+
     public static final String TABLE_NAME = "movie";
+
     public static final String COLUMN_ID = BaseColumns._ID;
     public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_POSTER_PATH = "poster_path";
+    public static final String COLUMN_VOTE_AVERAGE = "vote_average";
   }
 }

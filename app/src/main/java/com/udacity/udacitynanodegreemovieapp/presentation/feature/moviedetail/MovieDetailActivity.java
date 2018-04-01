@@ -17,6 +17,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -124,7 +125,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     viewModel.getTrailers().observe(this, this::setMovieTrailers);
 
-    viewModel.getFavorite().observe(this, fabFavorite::setSelected);
+    viewModel
+        .getFavorite()
+        .observe(
+            this,
+            selected -> {
+              Log.d("MovieDetail", "onCreate: " + selected);
+              fabFavorite.setSelected(selected);
+            });
   }
 
   private void setupToolbar() {

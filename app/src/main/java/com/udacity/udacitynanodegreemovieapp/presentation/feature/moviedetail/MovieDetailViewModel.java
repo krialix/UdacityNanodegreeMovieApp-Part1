@@ -6,14 +6,22 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
+import com.udacity.udacitynanodegreemovieapp.data.db.MovieContract;
 import com.udacity.udacitynanodegreemovieapp.data.model.MovieDetail;
 import com.udacity.udacitynanodegreemovieapp.data.model.ReviewResponse;
 import com.udacity.udacitynanodegreemovieapp.data.model.TrailerResponse;
 import com.udacity.udacitynanodegreemovieapp.data.repository.MovieRepository;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 class MovieDetailViewModel extends AndroidViewModel {
+
+  private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
   private final MovieRepository movieRepository;
   private final int movieId;
@@ -24,7 +32,8 @@ class MovieDetailViewModel extends AndroidViewModel {
     super(application);
     this.movieRepository = movieRepository;
     this.movieId = movieId;
-    favorite = new MutableLiveData<>();
+    this.favorite = new MutableLiveData<>();
+    favorite.setValue(false);
   }
 
   LiveData<MovieDetail> getMovie() {
@@ -40,6 +49,23 @@ class MovieDetailViewModel extends AndroidViewModel {
   }
 
   MutableLiveData<Boolean> getFavorite() {
+    EXECUTOR.submit(
+        () -> {
+          Cursor cursor =
+              getApplication()
+                  .getContentResolver()
+                  .query(
+                      MovieContract.MovieEntry.CONTENT_URI,
+                      new String[] {MovieContract.MovieEntry.COLUMN_ID},
+                      MovieContract.MovieEntry.COLUMN_ID + " = ?",
+                      new String[] {String.valueOf(movieId)},
+                      null);
+          if (cursor != null) {
+            favorite.postValue(cursor.getCount() > 0);
+            cursor.close();
+          }
+        });
+
     return favorite;
   }
 
@@ -47,8 +73,33 @@ class MovieDetailViewModel extends AndroidViewModel {
     Boolean value = favorite.getValue();
     if (value != null) {
       boolean favored = !value;
-      favorite.setValue(false);
-      movieRepository.toggleFavoriteMovie(getApplication(), movieDetail, favored);
+      favorite.setValue(favored);
+
+      Application application = getApplication();
+
+      EXECUTOR.submit(
+          () -> {
+            if (favored) {
+              ContentValues values = new ContentValues();
+              values.put(MovieContract.MovieEntry.COLUMN_ID, movieDetail.getId());
+              values.put(MovieContract.MovieEntry.COLUMN_TITLE, movieDetail.getTitle());
+              values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movieDetail.getPosterPath());
+              values.put(
+                  MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE,
+                  String.valueOf(movieDetail.getVoteAverage()));
+              application.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
+            } else {
+              application
+                  .getContentResolver()
+                  .delete(
+                      MovieContract.MovieEntry.CONTENT_URI,
+                      MovieContract.MovieEntry.COLUMN_ID + " = ?",
+                      new String[] {String.valueOf(movieDetail.getId())});
+            }
+            application
+                .getContentResolver()
+                .notifyChange(MovieContract.MovieEntry.CONTENT_URI, null);
+          });
     }
   }
 

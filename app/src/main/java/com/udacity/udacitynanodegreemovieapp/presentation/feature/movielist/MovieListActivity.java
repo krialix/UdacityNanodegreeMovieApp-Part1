@@ -73,7 +73,8 @@ public class MovieListActivity extends AppCompatActivity {
     movieListContainer.setVisibility(View.GONE);
 
     ViewModelProvider.Factory factory =
-        new MovieListViewModel.Factory(MovieRepository.getInstance(MovieDbClient.getInstance()));
+        new MovieListViewModel.Factory(
+            MovieRepository.getInstance(MovieDbClient.getInstance()), getApplication());
 
     viewModel = new ViewModelProvider(this, factory).get(MovieListViewModel.class);
 
@@ -85,11 +86,10 @@ public class MovieListActivity extends AppCompatActivity {
         .getMovies(sortType)
         .observe(
             this,
-            movieResponse -> {
+            movies -> {
               progressBar.setVisibility(View.GONE);
               movieListContainer.setVisibility(View.VISIBLE);
-              adapter.submitList(
-                  movieResponse != null ? movieResponse.getResults() : Collections.emptyList());
+              adapter.submitList(movies != null ? movies : Collections.emptyList());
             });
   }
 
